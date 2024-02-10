@@ -2,6 +2,39 @@
 
 {% block content %}
 
-<h1> Shondo Mi Beloved </h1>
+<div class="col-md-6 offset-md-3"> <!-- this a bootstrap thingy, i hate using ""-->
+
+{% if user.is_authenticated %}
+<h1> welcome! you is in uwu </h1>
+
+{% else %}
+</br>
+
+<h1> Login pls uwu</h1>
+
+</br> </br> 
+
+<form method="POST" action="{% url 'home' %}"> 
+    {% csrf_token %}
+    <form>
+        <div class="mb-3">
+          
+          <input type="text" class="form-control" name="username", placeholder="Username" required>
+          
+        </div>
+        <div class="mb-3">
+          
+          <input type="password" class="form-control" name="password", placeholder="Password" required>
+
+        </div>
+        
+        <button type="submit" class="btn btn-secondary">Login</button>
+      </form>
+
+</form>
+
+</div>
+
+{% endif %}
 
 {% endblock %}
