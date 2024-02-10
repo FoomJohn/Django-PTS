@@ -20,10 +20,10 @@ def home(request):
         return render(request, 'home.html', {})
 
     
-
-#login_user/logout_user is used because "login/logout" is already a function, up there at the import thing.
 def logout_user(request):
-    pass 
+    logout(request)
+    messages.success(request, "aight, you logged out, bai!!")
+    return redirect('home')
 
 
 #notes
