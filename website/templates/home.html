@@ -2,14 +2,48 @@
 
 {% block content %}
 
-<div class="col-md-6 offset-md-3"> <!-- this a bootstrap thingy, i hate using ""-->
+
 
 {% if user.is_authenticated %}
-<h1> welcome! you is in uwu </h1>
+
+
+<table class="table table-striped table-hover table-bordered table-sm">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      <th scope="col">Created_at</th>
+      <th scope="col">ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+
+      {% if records %}
+        {% for Record in records %}  <!-- this 'Record' is the one in models.py-->
+          <tr>
+            <td>{{ Record.first_name }}  {{ Record.last_name }} </td>
+            <td>{{ Record.phone }} </td>
+            <td>{{ Record.email }} </td>
+            <td>{{ Record.address }} </td>
+            <td>{{ Record.created_at }} </td>
+            <td><a href="{% url 'record' Record.id %}">{{ Record.id }} </a></td>
+          </tr>
+        {% endfor %}
+
+      {% endif %}
+    
+  </tbody>
+</table>
+
+
 
 {% else %}
 </br>
-
+<div>
+  <div class="col-md-6 offset-md-3">
 <h1> Login pls uwu</h1>
 
 </br> </br> 
@@ -33,10 +67,11 @@
 
 </form>
 
+</div>
 
 
 {% endif %}
 
-</div>
+
 
 {% endblock %}
