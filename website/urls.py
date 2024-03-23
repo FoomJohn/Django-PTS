@@ -11,4 +11,8 @@ urlpatterns = [
     path('update_record/<int:pk>', views.update_record, name='update_record'),
 
     path('tabulation/', views.tabulation, name='tabulation'),
+    path('tabulation/production_number', views.tabulation_production_number, name='tabulation_production_number'),
+    path('tabulation/swimsuit', views.tabulation_swimsuit, name='tabulation_swimsuit'),
+    path('tabulation/evening_gown', views.tabulation_evening_gown, name='tabulation_evening_gown'),
+    path('tabulation/q_and_a', views.tabulation_q_and_a, name='tabulation_q_and_a'),
 ]

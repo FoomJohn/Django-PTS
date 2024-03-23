@@ -110,4 +110,34 @@ def tabulation(request):
         messages.success(request, "noo")
         return redirect('home')
     
-        
+def tabulation_production_number(request):
+    
+    if request.user.is_authenticated:
+        return render(request, 'tabulation_production_number.html')
+    else:
+        messages.success(request, "noo")
+        return redirect('home')      
+
+def tabulation_swimsuit(request):
+    
+    if request.user.is_authenticated:
+        return render(request, 'tabulation_swimsuit.html')
+    else:
+        messages.success(request, "noo")
+        return redirect('home')   
+    
+def tabulation_evening_gown(request):
+    
+    if request.user.is_authenticated:
+        return render(request, 'tabulation_evening_gown.html')
+    else:
+        messages.success(request, "noo")
+        return redirect('home')   
+    
+def tabulation_q_and_a(request):
+    
+    if request.user.is_authenticated:
+        return render(request, 'tabulation_q_and_a.html')
+    else:
+        messages.success(request, "noo")
+        return redirect('home')   

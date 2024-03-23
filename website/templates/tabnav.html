@@ -7,19 +7,23 @@
             <!-- If statements for active tabs eyy-->
 
             <li class="nav-item">
-                <a class="nav-link" href="">Production Number</a>
+                <a class="nav-link" href="{% url 'tabulation_production_number' %}">Production Number</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="">Swimsuit</a>
+                <a class="nav-link" href="{% url 'tabulation_swimsuit' %}">Swimsuit</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="">Final Q&A</a>
+                <a class="nav-link" href="{% url 'tabulation_evening_gown' %}">Evening Gown</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link active" href="">Ranking</a>
+                <a class="nav-link" href="{% url 'tabulation_q_and_a' %}">Final Q&A</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'tabulation' %}">Ranking</a>
             </li>
 
         </ul>
