@@ -16,7 +16,7 @@ def home(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, "You are logged in! :D")
+            messages.success(request, "Welcome! You are logged in! :D")
             return redirect('home')
         else:
             messages.success(request, "There was an error, pls try again umu")
@@ -100,3 +100,14 @@ def update_record(request, pk):
         return redirect('home')
 #notes
 #if person is logging in, they are POST -ing, otherwish they are GET -ing. the request. it's like a bounty in an adveture guild.
+    
+
+def tabulation(request):
+    
+    if request.user.is_authenticated:
+        return render(request, 'tabulation.html')
+    else:
+        messages.success(request, "noo")
+        return redirect('home')
+    
+        

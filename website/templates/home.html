@@ -7,15 +7,19 @@
 {% if user.is_authenticated %}
 
 
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+  <a href="{% url 'add_record' %}" class="btn btn-outline-primary" type="button">Add Candidates</a>
+</div>
+
+<br>
+
 <table class="table table-striped table-hover table-bordered table-sm">
   <thead class="table-dark">
     <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Phone</th>
-      <th scope="col">Email</th>
-      <th scope="col">Address</th>
-      <th scope="col">Created_at</th>
       <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Address</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -24,12 +28,11 @@
       {% if records %}
         {% for Record in records %}  <!-- this 'Record' is the one in models.py-->
           <tr>
+            <td>{{ Record.id }} </a></td>
             <td>{{ Record.first_name }}  {{ Record.last_name }} </td>
-            <td>{{ Record.phone }} </td>
-            <td>{{ Record.email }} </td>
             <td>{{ Record.address }} </td>
-            <td>{{ Record.created_at }} </td>
-            <td><a href="{% url 'record' Record.id %}">{{ Record.id }} </a></td>
+            <td><a href="{% url 'record' Record.id %}" type="button" class="btn btn-outline-info"> Edit </a> 
+           
           </tr>
         {% endfor %}
 
@@ -44,7 +47,7 @@
 </br>
 <div>
   <div class="col-md-6 offset-md-3">
-<h1> Login pls uwu</h1>
+<h1>Login</h1>
 
 </br> </br> 
 
