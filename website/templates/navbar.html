@@ -9,16 +9,15 @@
           
           {% if user.is_authenticated %}
 
-            
-
+          <!--
             <li class="nav-item">
               <a class="nav-link" href="">Judge</a>
             </li>
-
+          -->
             <li class="nav-item">
               <a class="nav-link" href="{% url 'tabulation' %}">Tabulate</a>
             </li>
-
+          
             
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -33,7 +32,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'register' %}">Register</a>
             </li>
+            
           {% endif %}
+          
         </ul>
         
       </div>

@@ -51,11 +51,11 @@ def register_user(request):
     return render(request, 'register.html', {'form': form})
     
 
-def customer_record(request, pk):
+def candidate_record(request, pk):
     if request.user.is_authenticated:
         #look up the record pk
-        customer_record = Record.objects.get(id=pk)
-        return render(request, 'record.html', {'customer_record': customer_record})
+        candidate_record = Record.objects.get(id=pk)
+        return render(request, 'record.html', {'candidate_record': candidate_record})
     else:
         messages.success(request, "You must be logged in to do that")
         return redirect('home')

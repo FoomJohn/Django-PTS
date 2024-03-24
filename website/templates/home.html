@@ -18,7 +18,6 @@
     <tr>
       <th scope="col">ID</th>
       <th scope="col">Name</th>
-      <th scope="col">Address</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -30,8 +29,9 @@
           <tr>
             <td>{{ Record.id }} </a></td>
             <td>{{ Record.first_name }}  {{ Record.last_name }} </td>
-            <td>{{ Record.address }} </td>
             <td><a href="{% url 'record' Record.id %}" type="button" class="btn btn-outline-info"> Edit </a> 
+              <a href="{% url 'record' Record.id %}" type="button" class="btn btn-outline-info"> Judge </a> 
+            </td>
            
           </tr>
         {% endfor %}
