@@ -63,5 +63,5 @@ class ScoreForm(forms.ModelForm):
     fq_persuasion = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Persuasion", "class":"form-control"}), label="FQ")
 
     class Meta:
-        model = Record
+        model = ScoreEverything
         exclude = ()

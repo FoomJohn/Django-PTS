@@ -9,32 +9,38 @@
             
             <!-- If statements for active tabs eyy-->
 
+
+            
             <li class="nav-item">
                 <a class="nav-link active" href="{% url 'tabulation_production_number' %}">Production Number</a>
-            </li>
 
+            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'tabulation_swimsuit' %}">Swimsuit</a>
             </li>
-
+            
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'tabulation_evening_gown' %}">Evening Gown</a>
-            </li>
 
+            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'tabulation_q_and_a' %}">Final Q&A</a>
             </li>
-
+            
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'tabulation' %}">Ranking</a>
             </li>
-
+            
         </ul>
         
         
       </div>
     </div>
   </nav>
+
+
 
 <table class="table table-dark table-hover table-bordered table-sm">
     <thead class="table-dark">
@@ -55,7 +61,7 @@
         {% if scoreeverythings %}
           {% for ScoreEverything in scoreeverythings %}  <!-- this 'Record' is the one in models.py-->
             <tr>
-              <td>{{ ScoreEverything.candidate_id}} {{ ScoreEverything.candidate}} </a></td>
+              <td>{{ ScoreEverything.candidate_id }} {{ ScoreEverything.candidate }} </a></td>
               <td>{{ ScoreEverything.pn_performance }}   </td>
               <td>{{ ScoreEverything.pn_elegance }}   </td>
               <td>{{ ScoreEverything.pn_beauty }}   </td>

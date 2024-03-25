@@ -1,9 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% include 'tabnav.html' %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
+          
+          <!-- If statements for active tabs eyy-->
 
-<table class="table table-striped table-hover table-bordered table-sm">
+
+          
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'tabulation_production_number' %}">Production Number</a>
+
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'tabulation_swimsuit' %}">Swimsuit</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link active" href="{% url 'tabulation_evening_gown' %}">Evening Gown</a>
+
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'tabulation_q_and_a' %}">Final Q&A</a>
+          </li>
+          
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'tabulation' %}">Ranking</a>
+          </li>
+          
+      </ul>
+      
+      
+    </div>
+  </div>
+</nav>
+
+
+
+
+<table class="table table-dark table-hover table-bordered table-sm">
     <thead class="table-dark">
       <tr>
         <th scope="col">ID</th>
@@ -15,5 +55,27 @@
         <th scope="col">Ranking</th>
       </tr>
     </thead>
+
+    <tbody>
+    
+
+      {% if scoreeverythings %}
+        {% for ScoreEverything in scoreeverythings %}  <!-- this 'Record' is the one in models.py-->
+          <tr>
+            <td>{{ ScoreEverything.candidate_id }} {{ ScoreEverything.candidate }} </a></td>
+            <td>{{ ScoreEverything.eg_poise }}   </td>
+            <td>{{ ScoreEverything.eg_elegance }}   </td>
+            <td>{{ ScoreEverything.eg_beauty }}   </td>
+            <td>{{ ScoreEverything.eg_audience }}   </td>
+            <td>{{ ScoreEverything.eg_total }}   </td>
+            <td> 0  </td>
+            
+           
+          </tr>
+        {% endfor %}
+
+      {% endif %}
+    
+  </tbody>
 
 {% endblock %}

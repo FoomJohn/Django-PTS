@@ -163,8 +163,10 @@ def score_candidate(request, pk):
 
 def tabulation(request):
     
+    scoreeverythings = ScoreEverything.objects.all()
+
     if request.user.is_authenticated:
-        return render(request, 'tabulation.html')
+        return render(request, 'tabulation.html', {'scoreeverythings':scoreeverythings})
     else:
         messages.success(request, "noo")
         return redirect('home')
@@ -181,24 +183,30 @@ def tabulation_production_number(request):
 
 def tabulation_swimsuit(request):
     
+    scoreeverythings = ScoreEverything.objects.all()
+
     if request.user.is_authenticated:
-        return render(request, 'tabulation_swimsuit.html')
+        return render(request, 'tabulation_swimsuit.html', {'scoreeverythings':scoreeverythings})
     else:
         messages.success(request, "noo")
         return redirect('home')   
     
 def tabulation_evening_gown(request):
     
+    scoreeverythings = ScoreEverything.objects.all()
+
     if request.user.is_authenticated:
-        return render(request, 'tabulation_evening_gown.html')
+        return render(request, 'tabulation_evening_gown.html', {'scoreeverythings':scoreeverythings})
     else:
         messages.success(request, "noo")
         return redirect('home')   
     
 def tabulation_q_and_a(request):
     
+    scoreeverythings = ScoreEverything.objects.all()
+
     if request.user.is_authenticated:
-        return render(request, 'tabulation_q_and_a.html')
+        return render(request, 'tabulation_q_and_a.html', {'scoreeverythings':scoreeverythings})
     else:
         messages.success(request, "noo")
         return redirect('home')   
