@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignUpForm, AddRecordForm
-from .models import Record
+from .forms import SignUpForm, AddRecordForm, ScoreForm
+from .models import Record, ScoreEverything
 
 
 def home(request):
@@ -102,6 +102,65 @@ def update_record(request, pk):
 #if person is logging in, they are POST -ing, otherwish they are GET -ing. the request. it's like a bounty in an adveture guild.
     
 
+"""
+def score_candidate(request, pk):
+    if request.user.is_authenticated:
+        current_record = Record.objects.get(id=pk)
+        form = ScoreForm(request.POST or None, instance=current_record)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Record Updated")
+            #return redirect('home')
+        return render(request, 'score_candidate.html', {'form':form})
+    else:
+        messages.success(request, "You must be logged in to add stuff")
+        return redirect('home')
+"""
+
+def score_candidate(request, pk):
+    form = ScoreForm(request.POST or None)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if form.is_valid():
+                add_record = form.save()
+                messages.success(request, "Judges")
+                return redirect('home')
+        return render(request, 'score_candidate.html', {'form':form})
+    else:
+        messages.success(request, "You must be logged in to add stuff")
+        return redirect('home')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def tabulation(request):
     
     if request.user.is_authenticated:
@@ -112,8 +171,10 @@ def tabulation(request):
     
 def tabulation_production_number(request):
     
+    scoreeverythings = ScoreEverything.objects.all()
+
     if request.user.is_authenticated:
-        return render(request, 'tabulation_production_number.html')
+        return render(request, 'tabulation_production_number.html', {'scoreeverythings':scoreeverythings})
     else:
         messages.success(request, "noo")
         return redirect('home')      

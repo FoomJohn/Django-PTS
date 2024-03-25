@@ -30,7 +30,7 @@
             <td>{{ Record.id }} </a></td>
             <td>{{ Record.first_name }}  {{ Record.last_name }} </td>
             <td><a href="{% url 'record' Record.id %}" type="button" class="btn btn-outline-info"> Edit </a> 
-              <a href="{% url 'record' Record.id %}" type="button" class="btn btn-outline-info"> Judge </a> 
+              <a href="{% url 'score_candidate' Record.id %}" type="button" class="btn btn-outline-info"> Judge </a> 
             </td>
            
           </tr>

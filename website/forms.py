@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Record
+from .models import Record, ScoreEverything
 
 
 class SignUpForm(UserCreationForm):
@@ -44,3 +44,24 @@ class AddRecordForm(forms.ModelForm):
         model = Record
         exclude = ("user",)
 
+class ScoreForm(forms.ModelForm):
+    pn_performance = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Performance", "class":"form-control"}), label="PN")
+    pn_elegance = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Elegance", "class":"form-control"}), label="PN")
+    pn_beauty = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Beauty", "class":"form-control"}), label="PN")
+    pn_audience = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Audience", "class":"form-control"}), label="PN")
+    sw_poise = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Poise and Bearing", "class":"form-control"}), label="SW")
+    sw_body = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Body Proportion", "class":"form-control"}), label="SW")
+    sw_beauty = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Beauty", "class":"form-control"}), label="SW")
+    sw_audience = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Audience Impact", "class":"form-control"}), label="SW")
+    eg_poise = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Poise and Bearing", "class":"form-control"}), label="EG")
+    eg_elegance = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Elegance", "class":"form-control"}), label="EG")
+    eg_beauty = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Beauty", "class":"form-control"}), label="EG")
+    eg_audience = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Audience Impact", "class":"form-control"}), label="EG")
+    fq_wisdom = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Wisdom", "class":"form-control"}), label="FQ")
+    fq_charisma = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Charisma", "class":"form-control"}), label="FQ")
+    fq_intelligence = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Intelligence", "class":"form-control"}), label="FQ")
+    fq_persuasion = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Persuasion", "class":"form-control"}), label="FQ")
+
+    class Meta:
+        model = Record
+        exclude = ()
