@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm, ScoreForm
@@ -118,14 +118,27 @@ def score_candidate(request, pk):
 """
 
 def score_candidate(request, pk):
+
+    current_record = get_object_or_404(Record, id=pk)
+    judge = request.user
+
+    # Check if the judge has already scored this candidate
+    if ScoreEverything.objects.filter(candidate=current_record, judge=judge).exists():
+        messages.warning(request, "You have already judged this candidate.")
+        return redirect('home')
+    
     form = ScoreForm(request.POST or None)
     if request.user.is_authenticated:
+        current_record = Record.objects.get(id=pk)
         if request.method == "POST":
             if form.is_valid():
-                add_record = form.save()
-                messages.success(request, "Judges")
+                instance = form.save(commit=False)
+                instance.judge = request.user
+                instance.candidate = current_record
+                instance.save()
+                messages.success(request, "Judged")
                 return redirect('home')
-        return render(request, 'score_candidate.html', {'form':form})
+        return render(request, 'score_candidate.html', {'form':form, 'current_record': current_record})
     else:
         messages.success(request, "You must be logged in to add stuff")
         return redirect('home')

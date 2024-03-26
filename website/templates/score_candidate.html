@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<div class="card">
+    <div class="card-header">
+        {{ current_record.id }}  
+        <strong> {{ current_record.first_name }}  
+        {{ current_record.last_name }} </strong>
+    </div>
+</div>
+
+
 <div>
     <br>
 <div class="col-md-6 offset-md-3">
-    <h1> Update Record </h1>
+    <h1> Judge Candidate </h1>
+    <h6 style="color:gray"> Input Scores of 1 (lowest) to 10 (highest). </h6>
 <br><br>
 
 <form method="POST"> 
@@ -11,8 +22,11 @@
     {{ form.as_p }}
 
     <br/>
-    <button type="submit" class="btn btn-secondary">Update Record</button>
+    <button type="submit" class="btn btn-secondary">Judge</button>
     <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 </form>
 </div>
+
+
+
 {% endblock %}
