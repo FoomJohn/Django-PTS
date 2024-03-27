@@ -7,5 +7,5 @@ class ListRecord(admin.ModelAdmin):
 
     list_display = ( 'id', 'first_name', 'last_name',  'created_at' )
 
-admin.site.register(Record, ListRecord)
+admin.site.register(Record,)
 admin.site.register(ScoreEverything)

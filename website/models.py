@@ -7,10 +7,10 @@ class Record(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='website/images/', default='images/placeholder_image.jpg')
 
     def __str__(self):
         return(f"{self.first_name} {self.last_name}")
-    
     # after making this, we make migration then we push migration
 
 class ScoreEverything(models.Model):

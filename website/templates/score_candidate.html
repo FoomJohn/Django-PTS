@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 
 <div class="card">
     <div class="card-header">
@@ -7,15 +8,22 @@
         <strong> {{ current_record.first_name }}  
         {{ current_record.last_name }} </strong>
     </div>
+    <div class="card-body">
+        <img src="{{ current_record.image.url }}" class="img-fluid rounded mx-auto d-block" style="max-width: 150px;" alt="Profile Picture">
+    </div>
 </div>
-
 
 <div>
     <br>
 <div class="col-md-6 offset-md-3">
+
+{% if not score_exists %}
+
+
     <h1> Judge Candidate </h1>
     <h6 style="color:gray"> Input Scores of 1 (lowest) to 10 (highest). </h6>
 <br><br>
+
 
 <form method="POST"> 
     {% csrf_token %}
@@ -25,6 +33,10 @@
     <button type="submit" class="btn btn-secondary">Judge</button>
     <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 </form>
+
+{% else %}
+        <p>You have already judged this candidate.</p>
+    {% endif %}
 </div>
 
 
