@@ -54,8 +54,9 @@ def register_user(request):
 def candidate_record(request, pk):
     if request.user.is_authenticated:
         #look up the record pk
+        current_record = get_object_or_404(Candidate, id=pk)
         candidate_record = Candidate.objects.get(id=pk)
-        return render(request, 'record.html', {'candidate_record': candidate_record})
+        return render(request, 'record.html', {'candidate_record': candidate_record, 'current_record': current_record})
     else:
         messages.success(request, "You must be logged in to do that")
         return redirect('home')
@@ -71,7 +72,7 @@ def delete_candidate(request, pk):
         messages.success(request, "You must be logged in to do that")
         return redirect('home')
     
-
+"""
 def add_candidate(request):
     form = AddRecordForm(request.POST or None)
     if request.user.is_authenticated:
@@ -81,6 +82,22 @@ def add_candidate(request):
                 messages.success(request, "Record Added")
                 return redirect('home')
         return render(request, 'add_record.html', {'form':form})
+    else:
+        messages.success(request, "You must be logged in to add stuff")
+        return redirect('home')
+"""
+
+def add_candidate(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = AddRecordForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Record Added")
+                return redirect('home')
+        else:
+            form = AddRecordForm()
+        return render(request, 'add_record.html', {'form': form})
     else:
         messages.success(request, "You must be logged in to add stuff")
         return redirect('home')

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 
 <div class="card">
     <div class="card-header">
@@ -7,6 +8,7 @@
         {{ candidate_record.last_name }} </strong>
     </div>
     <div class="card-body">
+        <img src="{{ current_record.image.url }}" class="img-fluid rounded mx-auto d-block" style="max-width: 150px;" alt="Profile Picture">
         <p class="card-text">
             <strong>ID: </strong>{{ candidate_record.id }} <br/>
             <strong>Date Added: </strong>{{ candidate_record.created_at }} <br/>

@@ -43,7 +43,7 @@ class AddRecordForm(forms.ModelForm):
 
     class Meta:
         model = Candidate
-        exclude = ("user",)
+        exclude = ()
 
 class ScoreForm(forms.ModelForm):
     pn_performance = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Performance", "class":"form-control"}), label="Performance Number (Poise and Bearing)", validators=[MinValueValidator(1), MaxValueValidator(10)])
