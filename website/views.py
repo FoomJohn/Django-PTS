@@ -105,13 +105,17 @@ def add_candidate(request):
 
 def update_candidate(request, pk):
     if request.user.is_authenticated:
+        candidate_record = get_object_or_404(Candidate, id=pk)
         current_record = Candidate.objects.get(id=pk)
-        form = AddRecordForm(request.POST or None, instance=current_record)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Record Updated")
-            return redirect('home')
-        return render(request, 'update_record.html', {'form':form})
+        if request.method == "POST":
+            form = AddRecordForm(request.POST or None, request.FILES, instance=current_record)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Record Updated")
+                return redirect('home')
+        else:
+            form = AddRecordForm()
+        return render(request, 'update_record.html', {'form':form, 'candidate_record': candidate_record, 'current_record': current_record})
     else:
         messages.success(request, "You must be logged in to add stuff")
         return redirect('home')

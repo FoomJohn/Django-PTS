@@ -2,6 +2,7 @@
 {% block content %}
 {% load static %}
 
+<div class="col-md-6 offset-md-3">
 <div class="card">
     <div class="card-header">
         <strong> {{ candidate_record.first_name }}  
@@ -17,13 +18,15 @@
     </div>
 </div>
 
-
-
-  <br>
+<br>
 
   <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
   <a href="{% url 'delete_candidate' candidate_record.id %}" class="btn btn-danger">Delete</a>
   <a href="{% url 'update_candidate' candidate_record.id %}" class="btn btn-secondary">Update Record</a>
+
+</div>
+
+  
             
             
 
