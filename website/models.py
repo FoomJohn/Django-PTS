@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 
 # models are the database stuff for django
 
-class Record(models.Model):
+
+
+class Candidate(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -11,11 +13,12 @@ class Record(models.Model):
 
     def __str__(self):
         return(f"{self.first_name} {self.last_name}")
-    # after making this, we make migration then we push migration
+
+
 
 class ScoreEverything(models.Model):
 
-    candidate = models.ForeignKey(Record, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     judge = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
     pn_performance = models.IntegerField()
     pn_elegance = models.IntegerField()
@@ -38,3 +41,17 @@ class ScoreEverything(models.Model):
     eg_total = models.IntegerField(default=0, blank=False)
     fq_total = models.IntegerField(default=0, blank=False)
     t_avg = models.IntegerField(default=0, blank=False)
+
+
+
+
+class Record(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='website/images/', default='images/placeholder_image.jpg')
+
+    def __str__(self):
+        return(f"{self.first_name} {self.last_name}")
+
+    # after making this, we make migration then we push migration

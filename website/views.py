@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm, ScoreForm
-from .models import Record, ScoreEverything
+from .models import Candidate, ScoreEverything
 
 
 def home(request):
 
-    records = Record.objects.all()
+    candidates = Candidate.objects.all()
 
     if request.method == 'POST':
         username = request.POST['username']
@@ -22,7 +22,7 @@ def home(request):
             messages.success(request, "There was an error, pls try again umu")
             return redirect('home')
     else:
-        return render(request, 'home.html', {'records':records})
+        return render(request, 'home.html', {'candidates':candidates})
 
     
 def logout_user(request):
@@ -54,30 +54,30 @@ def register_user(request):
 def candidate_record(request, pk):
     if request.user.is_authenticated:
         #look up the record pk
-        candidate_record = Record.objects.get(id=pk)
+        candidate_record = Candidate.objects.get(id=pk)
         return render(request, 'record.html', {'candidate_record': candidate_record})
     else:
         messages.success(request, "You must be logged in to do that")
         return redirect('home')
         
 
-def delete_record(request, pk):
+def delete_candidate(request, pk):
     if request.user.is_authenticated:
-        delete_it = Record.objects.get(id=pk)
+        delete_it = Candidate.objects.get(id=pk)
         delete_it.delete()
-        messages.success(request, "Record Deleted")
+        messages.success(request, "Candidate Deleted")
         return redirect('home')
     else:
         messages.success(request, "You must be logged in to do that")
         return redirect('home')
     
 
-def add_record(request):
+def add_candidate(request):
     form = AddRecordForm(request.POST or None)
     if request.user.is_authenticated:
         if request.method == "POST":
             if form.is_valid():
-                add_record = form.save()
+                form.save()
                 messages.success(request, "Record Added")
                 return redirect('home')
         return render(request, 'add_record.html', {'form':form})
@@ -86,9 +86,9 @@ def add_record(request):
         return redirect('home')
 
 
-def update_record(request, pk):
+def update_candidate(request, pk):
     if request.user.is_authenticated:
-        current_record = Record.objects.get(id=pk)
+        current_record = Candidate.objects.get(id=pk)
         form = AddRecordForm(request.POST or None, instance=current_record)
         if form.is_valid():
             form.save()
@@ -118,7 +118,7 @@ def score_candidate(request, pk):
 """
 
 def score_candidate(request, pk):
-    current_record = get_object_or_404(Record, id=pk)
+    current_record = get_object_or_404(Candidate, id=pk)
     judge = request.user
 
     # Check if the judge has already scored this candidate

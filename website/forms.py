@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Record, ScoreEverything
+from .models import Candidate, ScoreEverything
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -42,7 +42,7 @@ class AddRecordForm(forms.ModelForm):
     image = forms.ImageField(required=False, label="Profile Picture")
 
     class Meta:
-        model = Record
+        model = Candidate
         exclude = ("user",)
 
 class ScoreForm(forms.ModelForm):
