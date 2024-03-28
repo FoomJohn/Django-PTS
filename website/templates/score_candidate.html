@@ -2,6 +2,7 @@
 {% block content %}
 {% load static %}
 
+<div class="col-md-6 offset-md-3">
 <div class="card">
     <div class="card-header">
         {{ current_record.id }}  
@@ -15,7 +16,7 @@
 
 <div>
     <br>
-<div class="col-md-6 offset-md-3">
+
 
 {% if not score_exists %}
 
@@ -30,7 +31,7 @@
     {{ form.as_p }}
 
     <br/>
-    <button type="submit" class="btn btn-secondary">Judge</button>
+    <button type="submit" class="btn btn-success">Judge</button>
     <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 </form>
 

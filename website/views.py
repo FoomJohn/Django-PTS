@@ -73,20 +73,7 @@ def delete_candidate(request, pk):
         messages.success(request, "You must be logged in to do that")
         return redirect('home')
     
-"""
-def add_candidate(request):
-    form = AddRecordForm(request.POST or None)
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Record Added")
-                return redirect('home')
-        return render(request, 'add_record.html', {'form':form})
-    else:
-        messages.success(request, "You must be logged in to add stuff")
-        return redirect('home')
-"""
+
 
 def add_candidate(request):
     if request.user.is_authenticated:
@@ -124,20 +111,6 @@ def update_candidate(request, pk):
 #if person is logging in, they are POST -ing, otherwish they are GET -ing. the request. it's like a bounty in an adveture guild.
     
 
-"""
-def score_candidate(request, pk):
-    if request.user.is_authenticated:
-        current_record = Record.objects.get(id=pk)
-        form = ScoreForm(request.POST or None, instance=current_record)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Record Updated")
-            #return redirect('home')
-        return render(request, 'score_candidate.html', {'form':form})
-    else:
-        messages.success(request, "You must be logged in to add stuff")
-        return redirect('home')
-"""
 
 def score_candidate(request, pk):
     current_record = get_object_or_404(Candidate, id=pk)
@@ -192,7 +165,22 @@ def delete_all_candidate(request):
     
     
 
+def scoreeverything_view(request):
+    # Initialize variables
+    filtered_score_everythings = None
 
+    if request.method == 'POST':
+        # Get the selected judge from the form
+        selected_judge = request.POST.get('judge')
+        if selected_judge:
+            # Filter score_everythings based on the selected judge
+            filtered_score_everythings = ScoreEverything.objects.filter(judge=selected_judge)
+
+    # Fetch all score entries from the database if no filter is applied
+    if filtered_score_everythings is None:
+        filtered_score_everythings = ScoreEverything.objects.all()
+
+    return render(request, 'scoreeverything.html', {'filtered_score_everythings': filtered_score_everythings})
 
 
 

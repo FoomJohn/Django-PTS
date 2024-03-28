@@ -39,6 +39,7 @@
     <tr>
       <th scope="col">ID</th>
       <th scope="col">Name</th>
+      <th scope="col">Status</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -50,6 +51,7 @@
           <tr>
             <td>{{ Candidate.id }} </a></td>
             <td>{{ Candidate.first_name }}  {{ Candidate.last_name }} </td>
+            <td> not sure </a></td>
             <td><a href="{% url 'candidate' Candidate.id %}" type="button" class="btn btn-light btn-sm"> Edit </a> 
               <a href="{% url 'score_candidate' Candidate.id %}" type="button" class="btn btn-info btn-sm"> Judge </a> 
             </td>
