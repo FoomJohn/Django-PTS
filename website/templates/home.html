@@ -8,8 +8,29 @@
 
 
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-  <a href="{% url 'add_candidate' %}" class="btn btn-outline-primary" type="button">Add Candidates</a>
+  <a href="{% url 'add_candidate' %}" class="btn btn-primary btn-sm" type="button">Add Candidates</a>
+  <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete All</button>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-danger" id="exampleModalLabel">Delete Candidates??</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure?</p>
+        <p>This will <span class="text-danger"><strong>DELETE</strong></span> all the candidate records.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="{% url 'delete_all_candidate' %}" type="button" class="btn btn-danger">Delete All</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <br>
 
@@ -29,8 +50,8 @@
           <tr>
             <td>{{ Candidate.id }} </a></td>
             <td>{{ Candidate.first_name }}  {{ Candidate.last_name }} </td>
-            <td><a href="{% url 'candidate' Candidate.id %}" type="button" class="btn btn-outline-info"> Edit </a> 
-              <a href="{% url 'score_candidate' Candidate.id %}" type="button" class="btn btn-outline-info"> Judge </a> 
+            <td><a href="{% url 'candidate' Candidate.id %}" type="button" class="btn btn-light btn-sm"> Edit </a> 
+              <a href="{% url 'score_candidate' Candidate.id %}" type="button" class="btn btn-info btn-sm"> Judge </a> 
             </td>
            
           </tr>

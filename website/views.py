@@ -1,3 +1,4 @@
+from django.db import connection, transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -8,7 +9,7 @@ from .models import Candidate, ScoreEverything
 def home(request):
 
     candidates = Candidate.objects.all()
-
+    
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -159,11 +160,37 @@ def score_candidate(request, pk):
 
     return render(request, 'score_candidate.html', {'form': form, 'current_record': current_record, 'score_exists': score_exists})
 
+def reset_auto_increment(table_name):
+    with connection.cursor() as cursor:
+        cursor.execute(f"ALTER TABLE {table_name} AUTO_INCREMENT = 1;")
 
 
+def delete_all_candidate(request):
+    if request.user.is_authenticated:
+        # Step 1: Delete all candidate objects
+        Candidate.objects.all().delete()
+
+        # Step 2: Reset the primary key sequence
+        try:
+            # Reset auto-increment for website_candidate table
+            reset_auto_increment("website_candidate")
 
 
+            # Commit the transaction
+            transaction.commit()
 
+        except Exception as e:
+            # Rollback the transaction if any error occurs
+            transaction.rollback()
+            raise e
+        messages.success(request, "All Candidates Removed")
+        return redirect('home')  
+
+    else:
+        messages.success(request, "You must be logged in to add stuff")
+        return redirect('home')
+    
+    
 
 
 

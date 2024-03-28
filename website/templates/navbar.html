@@ -9,6 +9,12 @@
         
         {% if user.is_authenticated %}
 
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Candidates</a>
+          </li>
+
+          
           <li class="nav-item">
             <a class="nav-link" href="{% url 'tabulation' %}">Scores</a>
           </li>
