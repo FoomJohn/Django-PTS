@@ -4,22 +4,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm, ScoreForm
 from .models import Candidate, ScoreEverything, Status
+from .filters import ScoreFilter
 
 
 def home(request):
     candidates = Candidate.objects.all()
     current_user = request.user
+    
+    # Initialize candidate_ids as an empty list
+    candidate_ids = []
 
-    # Check if the current user (judge) and candidate exist together in the Status model
-    status_exists = False
-    candidate_id = None
     if current_user.is_authenticated:
-        try:
-            status = Status.objects.get(judge=current_user)
-            candidate_id = status.candidate_id
-            status_exists = True
-        except Status.DoesNotExist:
-            pass  # Status entry does not exist for the current user
+        # Get all candidate IDs for which the current user has a corresponding entry in the Status model
+        candidate_ids = Status.objects.filter(judge=current_user).values_list('candidate_id', flat=True)
 
     if request.method == 'POST':
         username = request.POST['username']
@@ -33,8 +30,7 @@ def home(request):
         else:
             messages.error(request, "Invalid username or password.")
 
-    return render(request, 'home.html', {'candidates': candidates, 'status_exists': status_exists, 'candidate_id': candidate_id})
-
+    return render(request, 'home.html', {'candidates': candidates, 'candidate_ids': candidate_ids})
     
 def logout_user(request):
     logout(request)
@@ -223,8 +219,11 @@ def tabulation(request):
     
     scoreeverythings = ScoreEverything.objects.all()
 
+    scorefilter = ScoreFilter(request.GET, queryset=scoreeverythings)
+    scoreeverythings = scorefilter.qs
+
     if request.user.is_authenticated:
-        return render(request, 'tabulation.html', {'scoreeverythings':scoreeverythings})
+        return render(request, 'tabulation.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter, })
     else:
         messages.success(request, "noo")
         return redirect('home')

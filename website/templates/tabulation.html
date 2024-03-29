@@ -40,10 +40,24 @@
   </div>
 </nav>
 
-
 <br>
 
-<table class="table table-dark table-hover table-bordered table-sm">
+<div class="row">
+  <div class="col">
+    <div class="card card-body">
+      <form method="get">
+        {{ scorefilter.form }}
+        <button class="btn btn-primary" type="submit">
+        Submit
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<br>
+<table class="table table-striped table-hover table-bordered table-sm">
     <thead class="table-dark">
       <tr>
         <th scope="col">ID</th>
