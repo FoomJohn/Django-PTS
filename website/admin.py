@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Candidate, ScoreEverything
+from .models import Candidate, ScoreEverything, Status
 
 # Register your models here.
 
@@ -14,3 +14,4 @@ class ReadId(admin.ModelAdmin):
 
 admin.site.register(Candidate, ReadId)
 admin.site.register(ScoreEverything)
+admin.site.register(Status)

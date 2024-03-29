@@ -3,27 +3,37 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm, ScoreForm
-from .models import Candidate, ScoreEverything
+from .models import Candidate, ScoreEverything, Status
 
 
 def home(request):
-
     candidates = Candidate.objects.all()
-    
+    current_user = request.user
+
+    # Check if the current user (judge) and candidate exist together in the Status model
+    status_exists = False
+    candidate_id = None
+    if current_user.is_authenticated:
+        try:
+            status = Status.objects.get(judge=current_user)
+            candidate_id = status.candidate_id
+            status_exists = True
+        except Status.DoesNotExist:
+            pass  # Status entry does not exist for the current user
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        #Authenticate part
+        # Authentication part
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             messages.success(request, "Welcome! You are logged in! :D")
             return redirect('home')
         else:
-            messages.success(request, "There was an error, pls try again umu")
-            return redirect('home')
-    else:
-        return render(request, 'home.html', {'candidates':candidates})
+            messages.error(request, "Invalid username or password.")
+
+    return render(request, 'home.html', {'candidates': candidates, 'status_exists': status_exists, 'candidate_id': candidate_id})
 
     
 def logout_user(request):
@@ -76,6 +86,7 @@ def delete_candidate(request, pk):
 
 
 def add_candidate(request):
+    
     if request.user.is_authenticated:
         if request.method == "POST":
             form = AddRecordForm(request.POST, request.FILES)
@@ -85,9 +96,9 @@ def add_candidate(request):
                 return redirect('home')
         else:
             form = AddRecordForm()
-        return render(request, 'add_record.html', {'form': form})
+        return render(request, 'add_record.html', {'form': form, })
     else:
-        messages.success(request, "You must be logged in to add stuff")
+        messages.error(request, "You must be logged in to add stuff")
         return redirect('home')
 
 
@@ -125,7 +136,9 @@ def score_candidate(request, pk):
             instance = form.save(commit=False)
             instance.judge = request.user
             instance.candidate = current_record
+            Status.objects.create(judge=request.user, candidate=current_record)
             instance.save()
+            
             messages.success(request, "Judged")
             return redirect('home')
     else:

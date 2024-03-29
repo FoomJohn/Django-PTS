@@ -44,26 +44,27 @@
     </tr>
   </thead>
   <tbody>
-    
-
-      {% if candidates %}
-        {% for Candidate in candidates %}  <!-- this 'Record' is the one in models.py-->
-          <tr>
-            <td>{{ Candidate.id }} </a></td>
-            <td>{{ Candidate.first_name }}  {{ Candidate.last_name }} </td>
-            <td> not sure </a></td>
-            <td><a href="{% url 'candidate' Candidate.id %}" type="button" class="btn btn-light btn-sm"> Edit </a> 
-              <a href="{% url 'score_candidate' Candidate.id %}" type="button" class="btn btn-info btn-sm"> Judge </a> 
-            </td>
-           
-          </tr>
-        {% endfor %}
-
-      {% endif %}
-    
+    {% if candidates %}
+      {% for candidate in candidates %}
+        <tr>
+          <td>{{ candidate.id }}</td>
+          <td>{{ candidate.first_name }} {{ candidate.last_name }}</td>
+          <td>
+            {% if status_exists and candidate.id == candidate_id %}
+              <span class="text-success"><strong>Scored</strong></span>
+            {% else %}
+              Pending
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'candidate' candidate.id %}" type="button" class="btn btn-light btn-sm">Edit</a>
+            <a href="{% url 'score_candidate' candidate.id %}" type="button" class="btn btn-info btn-sm">Judge</a>
+          </td>
+        </tr>
+      {% endfor %}
+    {% endif %}
   </tbody>
 </table>
-
 
 
 {% else %}

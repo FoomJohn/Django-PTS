@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Candidate, ScoreEverything
+from .models import Candidate, ScoreEverything, Status
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -44,6 +44,8 @@ class AddRecordForm(forms.ModelForm):
     class Meta:
         model = Candidate
         exclude = ()
+
+
 
 class ScoreForm(forms.ModelForm):
     pn_performance = forms.IntegerField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Performance", "class":"form-control"}), label="Performance Number (Poise and Bearing)", validators=[MinValueValidator(1), MaxValueValidator(10)])
@@ -115,3 +117,4 @@ class ScoreForm(forms.ModelForm):
         cleaned_data['t_avg'] = t_avg
         
         return cleaned_data
+

@@ -13,8 +13,13 @@ class Candidate(models.Model):
 
     def __str__(self):
         return(f"{self.first_name} {self.last_name}")
+    
 
+class Status(models.Model):
+    judge = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
 
+    
 
 class ScoreEverything(models.Model):
 
