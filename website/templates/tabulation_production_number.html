@@ -30,7 +30,7 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'tabulation' %}">Ranking</a>
+                <a class="nav-link" href="{% url 'tabulation' %}">Total Scores</a>
             </li>
             
         </ul>
@@ -40,7 +40,20 @@
     </div>
   </nav>
 
-
+  <br>
+  <div class="row">
+    <div class="col">
+        <form method="get">
+          {{ scorefilter.form }}
+          <br>
+          <button class="btn btn-primary btn-sm" type="submit">
+          Submit
+          </button>
+  
+        </form>
+    </div>
+  </div>
+  <br>
 
 <table class="table table-striped table-hover table-bordered table-sm">
     <thead class="table-dark">

@@ -5,4 +5,5 @@ from .models import ScoreEverything
 class ScoreFilter(django_filters.FilterSet):
     class Meta:
         model = ScoreEverything
-        fields = '__all__'
+        fields = ['judge']
+        

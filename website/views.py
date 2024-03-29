@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm, ScoreForm
+from django.contrib.auth.models import User
 from .models import Candidate, ScoreEverything, Status
 from .filters import ScoreFilter
 
@@ -217,7 +218,7 @@ def scoreeverything_view(request):
 
 def tabulation(request):
     
-    scoreeverythings = ScoreEverything.objects.all()
+    scoreeverythings = ScoreEverything.objects.all().order_by('candidate', 'judge')
 
     scorefilter = ScoreFilter(request.GET, queryset=scoreeverythings)
     scoreeverythings = scorefilter.qs
@@ -230,40 +231,56 @@ def tabulation(request):
     
 def tabulation_production_number(request):
     
-    scoreeverythings = ScoreEverything.objects.all()
+    scoreeverythings = ScoreEverything.objects.all().order_by('candidate', 'judge')
+
+    scorefilter = ScoreFilter(request.GET, queryset=scoreeverythings)
+    scoreeverythings = scorefilter.qs
+
 
     if request.user.is_authenticated:
-        return render(request, 'tabulation_production_number.html', {'scoreeverythings':scoreeverythings})
+        return render(request, 'tabulation_production_number.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter,})
     else:
         messages.success(request, "noo")
         return redirect('home')      
 
 def tabulation_swimsuit(request):
     
-    scoreeverythings = ScoreEverything.objects.all()
+    scoreeverythings = ScoreEverything.objects.all().order_by('candidate', 'judge')
+
+    scorefilter = ScoreFilter(request.GET, queryset=scoreeverythings)
+    scoreeverythings = scorefilter.qs
+
 
     if request.user.is_authenticated:
-        return render(request, 'tabulation_swimsuit.html', {'scoreeverythings':scoreeverythings})
+        return render(request, 'tabulation_swimsuit.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter,})
     else:
         messages.success(request, "noo")
         return redirect('home')   
     
 def tabulation_evening_gown(request):
     
-    scoreeverythings = ScoreEverything.objects.all()
+    scoreeverythings = ScoreEverything.objects.all().order_by('candidate', 'judge')
+
+    scorefilter = ScoreFilter(request.GET, queryset=scoreeverythings)
+    scoreeverythings = scorefilter.qs
+
 
     if request.user.is_authenticated:
-        return render(request, 'tabulation_evening_gown.html', {'scoreeverythings':scoreeverythings})
+        return render(request, 'tabulation_evening_gown.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter,})
     else:
         messages.success(request, "noo")
         return redirect('home')   
     
 def tabulation_q_and_a(request):
     
-    scoreeverythings = ScoreEverything.objects.all()
+    scoreeverythings = ScoreEverything.objects.all().order_by('candidate', 'judge')
+
+    scorefilter = ScoreFilter(request.GET, queryset=scoreeverythings)
+    scoreeverythings = scorefilter.qs
+
 
     if request.user.is_authenticated:
-        return render(request, 'tabulation_q_and_a.html', {'scoreeverythings':scoreeverythings})
+        return render(request, 'tabulation_q_and_a.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter,})
     else:
         messages.success(request, "noo")
         return redirect('home')   
