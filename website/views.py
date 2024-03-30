@@ -199,24 +199,6 @@ def scoreeverything_view(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def tabulation(request):
     
     scoreeverythings = ScoreEverything.objects.all().order_by('candidate', 'judge')
@@ -312,12 +294,14 @@ def tabulation_calculate(request):
     judge_done = total_status_entries == expected_entries_count
     print("Judge Done:", judge_done)
 
-
-
-
+    
 
     if request.user.is_authenticated:
-        return render(request, 'tabulation_calculate.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter, 'judge_done':judge_done})
+        if request.user.is_superuser:
+            is_superuser = True
+        else:
+            is_superuser = False
+        return render(request, 'tabulation_calculate.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter, 'judge_done':judge_done, 'is_superuser': is_superuser})
     else:
         messages.success(request, "noo")
         return redirect('home')

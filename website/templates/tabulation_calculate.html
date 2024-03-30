@@ -46,11 +46,9 @@
 
 <br>
 
-{% if judge_done %}
+{% if not judge_done %}
   <h1>True</h1>
-{% else %}
-  <h1>False</h1>
-{% endif %}
+
 
 
 
@@ -105,4 +103,15 @@
         {% endfor %}
 
       {% endif %}
+
+{% else %}
+  <h1>Not all judges are finished scoring.</h1>
+
+  {% if not is_superuser %}
+  <h5><span style='color:gray'>(also you're not admin)</span></h5>
+  {% else %}
+  <h5><span style='color:gray'>(hi admin :D)</span></h5>
+  {% endif %}
+
+{% endif %}
 {% endblock %}
