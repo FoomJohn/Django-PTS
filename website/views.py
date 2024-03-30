@@ -2,9 +2,10 @@ from django.db import connection, transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db.models import Count
 from .forms import SignUpForm, AddRecordForm, ScoreForm
 from django.contrib.auth.models import User
-from .models import Candidate, ScoreEverything, Status
+from .models import Candidate, ScoreEverything, Status, ScoreCard
 from .filters import ScoreFilter
 
 
@@ -284,3 +285,41 @@ def tabulation_q_and_a(request):
     else:
         messages.success(request, "noo")
         return redirect('home')   
+
+def tabulation_calculate(request):
+    
+    scoreeverythings = ScoreEverything.objects.all().order_by('candidate', 'judge')
+
+    scorefilter = ScoreFilter(request.GET, queryset=scoreeverythings)
+    scoreeverythings = scorefilter.qs
+
+    unique_judges_count = Status.objects.values('judge').distinct().count()
+    print("Unique Judges Count:", unique_judges_count)
+    
+    # Get the count of candidates
+    max_candidate_count = Candidate.objects.count()
+    print("Max Candidate Count:", max_candidate_count)
+
+    # Get the total count of entries in the Status table
+    total_status_entries = Status.objects.count()
+    print("Total Status Entries:", total_status_entries)
+
+    # Calculate the expected count of entries if each judge appears for every candidate
+    expected_entries_count = unique_judges_count * max_candidate_count
+    print("Expected Entries Count:", expected_entries_count)
+
+    # Check if the actual count of entries matches the expected count
+    judge_done = total_status_entries == expected_entries_count
+    print("Judge Done:", judge_done)
+
+
+
+
+
+    if request.user.is_authenticated:
+        return render(request, 'tabulation_calculate.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter, 'judge_done':judge_done})
+    else:
+        messages.success(request, "noo")
+        return redirect('home')
+
+

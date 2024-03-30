@@ -47,4 +47,12 @@ class ScoreEverything(models.Model):
     fq_total = models.IntegerField(default=0, blank=False)
     t_avg = models.IntegerField(default=0, blank=False)
 
+class ScoreCard(models.Model):
+
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    pn_all_total = models.IntegerField(default=0, blank=False)
+    sw_all_total = models.IntegerField(default=0, blank=False)
+    eg_all_total = models.IntegerField(default=0, blank=False)
+    fq_all_total = models.IntegerField(default=0, blank=False)
+    t_all_avg = models.IntegerField(default=0, blank=False)
 

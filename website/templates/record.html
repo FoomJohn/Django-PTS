@@ -20,12 +20,31 @@
 
 <br>
 
-  <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
-  <a href="{% url 'delete_candidate' candidate_record.id %}" class="btn btn-danger">Delete</a>
-  <a href="{% url 'update_candidate' candidate_record.id %}" class="btn btn-secondary">Update Record</a>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+    <a href="{% url 'update_candidate' candidate_record.id %}" class="btn btn-secondary">Update Record</a>
 
 </div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-danger" id="exampleModalLabel">Delete Candidate?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure?</p>
+          <p>This will <span class="text-danger"><strong>DELETE</strong></span><strong> {{ candidate_record.first_name }}  
+            {{ candidate_record.last_name }} </strong></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a href="{% url 'delete_candidate' candidate_record.id %}" type="button" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
   
             
             
