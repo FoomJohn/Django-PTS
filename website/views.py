@@ -2,7 +2,7 @@ from django.db import connection, transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.db.models import Count
+from django.db.models import Count, Avg
 from .forms import SignUpForm, AddRecordForm, ScoreForm
 from django.contrib.auth.models import User
 from .models import Candidate, ScoreEverything, Status, ScoreCard
@@ -17,6 +17,10 @@ def home(request):
     candidate_ids = []
 
     if current_user.is_authenticated:
+        if request.user.is_superuser:
+            is_superuser = True
+        else:
+            is_superuser = False
         # Get all candidate IDs for which the current user has a corresponding entry in the Status model
         candidate_ids = Status.objects.filter(judge=current_user).values_list('candidate_id', flat=True)
 
@@ -32,7 +36,7 @@ def home(request):
         else:
             messages.error(request, "Invalid username or password.")
 
-    return render(request, 'home.html', {'candidates': candidates, 'candidate_ids': candidate_ids})
+    return render(request, 'home.html', {'candidates': candidates, 'candidate_ids': candidate_ids, 'is_superuser': is_superuser})
     
 def logout_user(request):
     logout(request)
@@ -271,6 +275,7 @@ def tabulation_q_and_a(request):
 def tabulation_calculate(request):
     
     scoreeverythings = ScoreEverything.objects.all().order_by('candidate', 'judge')
+    scorecard = ScoreCard.objects.all().order_by('ranking')
 
     scorefilter = ScoreFilter(request.GET, queryset=scoreeverythings)
     scoreeverythings = scorefilter.qs
@@ -294,6 +299,9 @@ def tabulation_calculate(request):
     judge_done = total_status_entries == expected_entries_count
     print("Judge Done:", judge_done)
 
+    candidates = Candidate.objects.all()
+
+    # Iterate through each candidate
     
 
     if request.user.is_authenticated:
@@ -301,9 +309,67 @@ def tabulation_calculate(request):
             is_superuser = True
         else:
             is_superuser = False
-        return render(request, 'tabulation_calculate.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter, 'judge_done':judge_done, 'is_superuser': is_superuser})
+        return render(request, 'tabulation_calculate.html', {'scoreeverythings':scoreeverythings, 'scorefilter':scorefilter, 'judge_done':judge_done, 'is_superuser': is_superuser, 'scorecard': scorecard})
     else:
         messages.success(request, "noo")
         return redirect('home')
+
+
+def calculate_scorecard(request):
+    # Get all candidates
+    candidates = Candidate.objects.all()
+
+    # Iterate through each candidate
+    for candidate in candidates:
+        # Get all ScoreEverything instances for the current candidate
+        scores = ScoreEverything.objects.filter(candidate=candidate)
+
+        # Calculate the average of pn_total for the candidate
+        pn_avg = scores.aggregate(pn_avg=Avg('pn_total'))['pn_avg']
+
+        # Calculate the average of sw_total for the candidate
+        sw_avg = scores.aggregate(sw_avg=Avg('sw_total'))['sw_avg']
+
+        # Calculate the average of eg_total for the candidate
+        eg_avg = scores.aggregate(eg_avg=Avg('eg_total'))['eg_avg']
+
+        # Calculate the average of fq_total for the candidate
+        fq_avg = scores.aggregate(fq_avg=Avg('fq_total'))['fq_avg']
+
+        # Calculate the average of t_avg for the candidate
+        t_avg = scores.aggregate(t_avg=Avg('t_avg'))['t_avg']
+
+        # Create or update the ScoreCard entry for the candidate
+        score_card, created = ScoreCard.objects.get_or_create(candidate=candidate)
+        score_card.pn_all_total = pn_avg
+        score_card.sw_all_total = sw_avg
+        score_card.eg_all_total = eg_avg
+        score_card.fq_all_total = fq_avg
+        score_card.t_all_avg = t_avg
+        score_card.save()
+
+    # Get all ScoreCard objects and order them by total average score
+    scorecards = ScoreCard.objects.all().order_by('-t_all_avg')
+
+    # Assign ranks based on the sorted order
+    
+    rank = 1
+    prev_score = None
+    prev_rank = None
+    for scorecard in scorecards:
+        if prev_score is not None and scorecard.t_all_avg == prev_score:
+            # If the current score is the same as the previous score, assign the same rank
+            scorecard.ranking = prev_rank
+        else:
+            # Otherwise, assign a new rank
+            scorecard.ranking = rank
+            prev_rank = rank
+        scorecard.save()
+        prev_score = scorecard.t_all_avg
+        rank += 1
+        
+
+    messages.success(request, "Calculated Averages and Rankings!")
+    return redirect('tabulation_calculate')
 
 

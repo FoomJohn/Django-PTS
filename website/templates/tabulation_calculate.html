@@ -46,40 +46,19 @@
 
 <br>
 
-{% if not judge_done %}
-  <h1>True</h1>
+{% if judge_done %}
 
-
-
-
-<div class="row">
-  <div class="col-auto">
-      <form method="get">
-        {{ scorefilter.form }}
-        <br>
-        <button class="btn btn-primary btn-sm" type="submit">
-        Submit
-        </button>
-
-      </form>
-  </div>
-</div>
-
-
-
-
-
-<br>
 <table class="table table-striped table-hover table-bordered table-sm">
     <thead class="table-dark">
       <tr>
+        <th scope="col">Ranking</th>
         <th scope="col">ID</th>
         <th scope="col">Production Number</th>
         <th scope="col">Swimsuit</th>
         <th scope="col">Evening Gown</th>
         <th scope="col">Q & A</th>
         <th scope="col">Total</th>
-        <th scope="col">Judge</th>
+
       </tr>
     </thead>
 
@@ -87,25 +66,33 @@
     <tbody>
     
 
-      {% if scoreeverythings %}
-        {% for ScoreEverything in scoreeverythings %}  <!-- this 'Record' is the one in models.py-->
+      {% if scorecard %}
+        {% for ScoreCard in scorecard %}  <!-- this 'Record' is the one in models.py-->
           <tr>
-            <td>{{ ScoreEverything.candidate_id }} {{ ScoreEverything.candidate }} </a></td>
-            <td>{{ ScoreEverything.pn_total }}   </td>
-            <td>{{ ScoreEverything.sw_total }}   </td>
-            <td>{{ ScoreEverything.eg_total }}   </td>
-            <td>{{ ScoreEverything.fq_total }}   </td>
-            <td>{{ ScoreEverything.t_avg }}   </td>
-            <td>{{ ScoreEverything.judge }}  </td>
-            
-           
+            <td>{{ ScoreCard.ranking }}</td>
+            <td>{{ ScoreCard.candidate_id }} {{ ScoreCard.candidate }} </a></td>
+            <td>{{ ScoreCard.pn_all_total }}   </td>
+            <td>{{ ScoreCard.sw_all_total }}   </td>
+            <td>{{ ScoreCard.eg_all_total }}   </td>
+            <td>{{ ScoreCard.fq_all_total }}   </td>
+            <td>{{ ScoreCard.t_all_avg }}   </td>
+ 
           </tr>
         {% endfor %}
 
       {% endif %}
 
+    </tbody>
+    {% if not is_superuser %}
+    <a href="{% url 'calculate_scorecard' %}" class="btn btn-primary btn-sm disabled" tabindex="-1" role="button" aria-disabled="true">Calculate</a>
+    <h6><span style='color:gray'>You're not the admin</span></h6>
+    {% else %}
+    <a href="{% url 'calculate_scorecard' %}" class="btn btn-primary btn-sm" >Calculate</a>
+    {% endif %}
+
+
 {% else %}
-  <h1>Not all judges are finished scoring.</h1>
+  <h1>Candidate Scores Pending . . .</h1>
 
   {% if not is_superuser %}
   <h5><span style='color:gray'>(also you're not admin)</span></h5>

@@ -8,8 +8,14 @@
 
 
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+  {% if user.is_superuser %}
   <a href="{% url 'add_candidate' %}" class="btn btn-primary btn-sm" type="button">Add Candidates</a>
   <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete All</button>
+  {% else %}
+  <a href="{% url 'add_candidate' %}" class="btn btn-primary btn-sm disabled" tabindex="-1" role="button" aria-disabled="true">Add Candidates</a>
+  <button class="btn btn-danger btn-sm disabled" tabindex="-1" role="button" aria-disabled="true" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete All</button>
+  {% endif %}
+  
 </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -57,7 +63,11 @@
             {% endif %}
         </td>
           <td>
+            {% if user.is_superuser %}
             <a href="{% url 'candidate' candidate.id %}" type="button" class="btn btn-light btn-sm">Edit</a>
+            {% else %}
+            <a href="{% url 'candidate' candidate.id %}" type="button" class="btn btn-light btn-sm disabled" tabindex="-1" role="button" aria-disabled="true">Edit</a>
+            {% endif %}
             <a href="{% url 'score_candidate' candidate.id %}" type="button" class="btn btn-info btn-sm">Judge</a>
           </td>
         </tr>

@@ -49,10 +49,14 @@ class ScoreEverything(models.Model):
 
 class ScoreCard(models.Model):
 
+    #basically what we want to print
+    #also err... what we show for scores scores final??
+
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     pn_all_total = models.IntegerField(default=0, blank=False)
     sw_all_total = models.IntegerField(default=0, blank=False)
     eg_all_total = models.IntegerField(default=0, blank=False)
     fq_all_total = models.IntegerField(default=0, blank=False)
     t_all_avg = models.IntegerField(default=0, blank=False)
+    ranking = models.IntegerField(default=0)
 
