@@ -14,7 +14,7 @@ urlpatterns = [
     path('update_candidate/<int:pk>', views.update_candidate, name='update_candidate'),
     path('score_candidate/<int:pk>', views.score_candidate, name='score_candidate'),
     path('calculate_scorecard/', views.calculate_scorecard, name='calculate_scorecard'),
-     
+    path('generate_scorecard_document/', views.generate_scorecard_document, name='generate_scorecard_document'),
 
     path('tabulation/', views.tabulation, name='tabulation'),
     path('tabulation/calculate/', views.tabulation_calculate, name='tabulation_calculate'),

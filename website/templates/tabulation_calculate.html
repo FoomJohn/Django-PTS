@@ -83,6 +83,10 @@
       {% endif %}
 
     </tbody>
+  </table>
+    
+
+
     {% if not is_superuser %}
     <a href="{% url 'calculate_scorecard' %}" class="btn btn-primary btn-sm disabled" tabindex="-1" role="button" aria-disabled="true">Calculate</a>
     <h6><span style='color:gray'>You're not the admin</span></h6>
@@ -90,6 +94,7 @@
     <a href="{% url 'calculate_scorecard' %}" class="btn btn-primary btn-sm" >Calculate</a>
     {% endif %}
 
+    <a href="{% url 'generate_scorecard_document' %}" class="btn btn-primary btn-sm">Print</a>
 
 {% else %}
   <h1>Candidate Scores Pending . . .</h1>

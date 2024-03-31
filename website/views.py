@@ -7,7 +7,9 @@ from .forms import SignUpForm, AddRecordForm, ScoreForm
 from django.contrib.auth.models import User
 from .models import Candidate, ScoreEverything, Status, ScoreCard
 from .filters import ScoreFilter
-
+from docx import Document
+from docx.shared import Pt
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
 def home(request):
     candidates = Candidate.objects.all()
@@ -372,4 +374,100 @@ def calculate_scorecard(request):
     messages.success(request, "Calculated Averages and Rankings!")
     return redirect('tabulation_calculate')
 
+"""
+def generate_scorecard_document(request):
+    # Get ScoreCard objects ordered by ranking
+    scorecards = ScoreCard.objects.order_by('ranking')
 
+    # Create a new Word document
+    doc = Document()
+    
+    # Add a title to the document
+    doc.add_heading('ScoreCard', level=1)
+
+    # Define the number of columns in the table
+    num_columns = 7
+
+    # Add a table to the document
+    table = doc.add_table(rows=1, cols=num_columns)
+    table.style = 'Table Grid'
+
+    # Add column headers to the table
+    headings = ['Ranking', 'Candidate', 'PN Total', 'SW Total', 'EG Total', 'FQ Total', 'Total Avg']
+    header_cells = table.rows[0].cells
+    if len(headings) == num_columns:
+        print("len(headings) == num_columns is True")
+        for i, heading in enumerate(headings):
+            header_cells[i].text = heading
+    else:
+        print("len(headings) == num_columns is False")
+        # Handle the case where the number of headings doesn't match the number of columns
+        return redirect('tabulation_calculate')  # Redirect to a suitable page or handle the error
+
+    # Add ScoreCard data to the table rows
+    for scorecard in scorecards:
+        row = table.add_row().cells
+        row[0].text = str(scorecard.ranking)
+        row[1].text = f"{scorecard.candidate.first_name} {scorecard.candidate.last_name}"
+        row[2].text = str(scorecard.pn_all_total)
+        row[3].text = str(scorecard.sw_all_total)
+        row[4].text = str(scorecard.eg_all_total)
+        row[5].text = str(scorecard.fq_all_total)
+        row[6].text = str(scorecard.t_all_avg)
+
+    # Save the document to a temporary file
+    doc_file_path = 'website/documents/scorecard_document.docx'
+    doc.save(doc_file_path)
+
+    # Redirect the user back to the tabulation calculate page
+    return redirect('tabulation_calculate')"""
+
+
+def generate_scorecard_document(request):
+
+    try:
+        # Get ScoreCard objects ordered by ranking
+        scorecards = ScoreCard.objects.order_by('ranking')
+
+        # Create a new Word document
+        doc = Document()
+        
+        # Add a title to the document
+        title = doc.add_heading('ScoreCard', level=1)
+        title.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+        title.style.font.bold = True
+        title.style.font.size = Pt(24)
+
+        # Add a table to the document
+        table = doc.add_table(rows=1, cols=7)
+        table.style = 'Table Grid'
+
+        # Add column headers to the table
+        headings = ['Ranking', 'Candidate', 'PN Total', 'SW Total', 'EG Total', 'FQ Total', 'Total Avg']
+        header_cells = table.rows[0].cells
+        for i, heading in enumerate(headings):
+            header_cells[i].text = heading
+
+        # Add ScoreCard data to the table rows
+        for scorecard in scorecards:
+            row = table.add_row().cells
+            row[0].text = str(scorecard.ranking)
+            row[1].text = f"{scorecard.candidate.first_name} {scorecard.candidate.last_name}"
+            row[2].text = str(scorecard.pn_all_total)
+            row[3].text = str(scorecard.sw_all_total)
+            row[4].text = str(scorecard.eg_all_total)
+            row[5].text = str(scorecard.fq_all_total)
+            row[6].text = str(scorecard.t_all_avg)
+
+        # Save the document to the specified file path
+        doc_file_path = 'website/documents/scorecard_document.docx'
+        doc.save(doc_file_path)
+
+        messages.success(request, "Printed Scores!")
+        # Redirect the user back to the tabulation calculate page
+        return redirect('tabulation_calculate')
+
+    except PermissionError as e:
+            # Display a message if the document is open and cannot be saved
+            messages.error(request, "Can't print scores when Document is open")
+            return redirect('tabulation_calculate')
